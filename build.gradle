@@ -1,0 +1,19 @@
+plugins {
+    id 'com.github.johnrengelman.shadow' version '5.2.0'
+}
+
+def defaultPath = "C:\\Users\\LU__LU\\Desktop\\java\\Librarys\\PluginDefault";
+apply from: "$defaultPath/lib-plugin.gradle"
+
+group = 'me.lulu'
+version = 'SNAPSHOT'
+
+pluginName = "DaTouNMS"
+mainPackage = "me.lulu.datounms"
+mainClass = "DaTouNMS"
+serverFolder = "C:\\Users\\LU__LU\\Desktop\\Servers\\Naluwan\\1_8_Practice"
+author = "LU__LU"
+
+dependencies {
+    compileOnly 'org.inventivetalent.packetlistener:api:3.7.3-SNAPSHOT'
+}
