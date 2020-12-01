@@ -2,7 +2,7 @@ plugins {
     id 'com.github.johnrengelman.shadow' version '5.2.0'
 }
 
-def defaultPath = "C:\\Users\\LU__LU\\Desktop\\java\\Librarys\\PluginDefault";
+def defaultPath = "/home/jerry/Program/Minecraft Plugins/Librarys/PluginDefault";
 apply from: "$defaultPath/lib-plugin.gradle"
 
 group = 'me.lulu'
