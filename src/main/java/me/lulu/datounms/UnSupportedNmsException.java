@@ -6,6 +6,7 @@ package me.lulu.datounms;
 public class UnSupportedNmsException extends Exception {
 
     public UnSupportedNmsException() {
+        
     }
 
     public UnSupportedNmsException(String message) {

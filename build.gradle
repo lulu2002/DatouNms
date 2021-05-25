@@ -14,6 +14,10 @@ mainClass = "DaTouNMS"
 serverFolder = "C:\\Users\\LU__LU\\Desktop\\Servers\\Naluwan\\1_8_Practice"
 author = "LU__LU"
 
+repositories {
+    maven { url 'https://jitpack.io' }
+}
+
 dependencies {
-    compileOnly 'org.inventivetalent.packetlistener:api:3.7.3-SNAPSHOT'
+    compileOnly 'org.inventivetalent:packetlistenerapi:3.9.0-SNAPSHOT'
 }

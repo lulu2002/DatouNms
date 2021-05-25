@@ -1,7 +1,7 @@
 package me.lulu.datounms.v1_8_R3;
 
-import me.lulu.datounms.model.BiomeData;
 import me.lulu.datounms.BiomeHandler;
+import me.lulu.datounms.model.BiomeData;
 import net.minecraft.server.v1_8_R3.BiomeBase;
 
 import java.util.Arrays;

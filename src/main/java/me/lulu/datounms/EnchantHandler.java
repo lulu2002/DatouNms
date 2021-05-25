@@ -15,15 +15,28 @@ public interface EnchantHandler {
     void hideEnchants(PrepareItemEnchantEvent e);
 
     default void generateNewCosts(int[] costs, Random rand, int books) {
-        int base = (rand.nextInt(8) + 1)
-                + (books > 0 ? rand.nextInt((int) Math.floor(books / 2D))
-                + rand.nextInt(books)
-                : 0);// Randomize the enchant costs
-        costs[0] = Math.max(base / 3, 1);
-        costs[1] = (base * 2) / 3 + 1;
-        int first = Math.min(base, books * 2);
-        int last = Math.max(base, books * 2);
-        costs[2] = ThreadLocalRandom.current().nextInt(first, last) + 1;// Before v1.1
+        try {
+            int floor = ( int ) Math.floor(books / 2D);
+            int base = (rand.nextInt(8) + 1)
+                    + (books > 0 ?
+                    getFloor(floor, rand) + rand.nextInt(books)
+                    : 0);// Randomize the enchant costs
+            costs[0] = Math.max(base / 3, 1);
+            costs[1] = (base * 2) / 3 + 1;
+            int first = Math.min(base, books * 2);
+            int last = Math.max(base, books * 2);
+
+            if (first == last)
+                costs[2] = first + 1;
+            else
+                costs[2] = ThreadLocalRandom.current().nextInt(first, last) + 1;// Before v1.1
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    default int getFloor(int floor, Random rand) {
+        return floor <= 0 ? floor : rand.nextInt(floor);
     }
 
     default void clearArray(int[] array) {// Since we can't use a mutable array and I want shit clean
