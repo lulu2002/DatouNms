@@ -14,16 +14,18 @@ public class DaTouNMS {
 
     @Getter
     private static JavaPlugin plugin;
+    @Getter
+    private static String nmsVersion;
 
     public static void setup(JavaPlugin plugin) throws UnSupportedNmsException {
         NmsManagerFactory managerFactory = new NmsManagerFactory();
-        String version = getServerVersion();
+        nmsVersion = getServerVersion();
 
-        NmsManager nmsManager = managerFactory.getNmsManager(version);
+        NmsManager nmsManager = managerFactory.getNmsManager(nmsVersion);
         DaTouNMS.nmsManager = nmsManager;
         DaTouNMS.plugin = plugin;
 
-        System.out.println("Nms Version: " + version);
+        System.out.println("Nms Version: " + nmsVersion);
     }
 
     private static String getServerVersion() {
