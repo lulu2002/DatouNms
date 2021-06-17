@@ -3,5 +3,5 @@ jdk:
 before_install: [ ]
 install:
   - echo "Running a custom install command"
-  - gradle wrapper clean shadowjar
+  - ./gradlew clean shadowjar
 env: { }
