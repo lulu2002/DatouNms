@@ -22,8 +22,6 @@ dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.20'
     annotationProcessor 'org.projectlombok:lombok:1.18.20'
 
-    //to prevent project size getting to large, I didn't include spigot jar to github repo
-    //so you have to include the spigot jar files if you to contribute to this project
     compileOnly name: 'Spigot-1_17_R1'
     compileOnly name: 'Spigot-1_8_R3'
     compileOnly name: 'Spigot-1_9_R1'
