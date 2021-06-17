@@ -1,11 +1,11 @@
-package me.lulu.datounms.v1_16_R3;
+package me.lulu.datounms.v1_17_R1;
 
 import me.lulu.datounms.EnchantHandler;
-import net.minecraft.server.v1_16_R3.ContainerEnchantTable;
-import net.minecraft.server.v1_16_R3.ContainerProperty;
-import org.bukkit.craftbukkit.v1_16_R3.inventory.CraftInventoryView;
-import org.bukkit.event.enchantment.PrepareItemEnchantEvent;
 import me.lulu.datounms.utils.ReflectionUtil;
+import net.minecraft.world.inventory.ContainerEnchantTable;
+import net.minecraft.world.inventory.ContainerProperty;
+import org.bukkit.craftbukkit.v1_17_R1.inventory.CraftInventoryView;
+import org.bukkit.event.enchantment.PrepareItemEnchantEvent;
 
 import java.util.Random;
 import java.util.concurrent.Executors;
@@ -28,7 +28,7 @@ public class OldEnchant implements EnchantHandler {
         CraftInventoryView view = ( CraftInventoryView ) e.getView();
         ContainerEnchantTable table = ( ContainerEnchantTable ) view.getHandle();
 
-        ContainerProperty property = ReflectionUtil.getFieldContent(ContainerEnchantTable.class, "i", table);
+        ContainerProperty property = ReflectionUtil.getFieldContent(ContainerEnchantTable.class, "q", table);
         property.set(rand.nextInt()); // Set the enchantment seed
     }
 
@@ -36,13 +36,13 @@ public class OldEnchant implements EnchantHandler {
     public void oldEnchantCosts(PrepareItemEnchantEvent e) {
         CraftInventoryView view = ( CraftInventoryView ) e.getView();
         ContainerEnchantTable table = ( ContainerEnchantTable ) view.getHandle();
-        generateNewCosts(table.costs, rand, Math.min(e.getEnchantmentBonus(), 15));
+        generateNewCosts(table.k, rand, Math.min(e.getEnchantmentBonus(), 15));
     }
 
     @Override
     public void hideEnchants(PrepareItemEnchantEvent e) {
         CraftInventoryView view = ( CraftInventoryView ) e.getView();
         ContainerEnchantTable table = ( ContainerEnchantTable ) view.getHandle();
-        saveThread.schedule(() -> clearArray(table.enchantments), 10, TimeUnit.MILLISECONDS);
+        saveThread.schedule(() -> clearArray(table.l), 10, TimeUnit.MILLISECONDS);
     }
 }

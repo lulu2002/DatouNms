@@ -3,17 +3,17 @@ package me.lulu.datounms.model;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.mineacademy.fo.remain.CompEquipmentSlot;
-import org.mineacademy.fo.remain.CompMaterial;
+import org.bukkit.Material;
+import org.bukkit.inventory.EquipmentSlot;
 
 @RequiredArgsConstructor
 @Getter
 public class ArmorInfo {
     private String material;
     private int equipmentSlotNumber;
-    private CompEquipmentSlot equipmentSlot;
+    private EquipmentSlot equipmentSlot;
 
-    public static ArmorInfo fromMaterial(CompMaterial material) {
+    public static ArmorInfo fromMaterial(Material material) {
         String[] s = material.name().split("_");
         ArmorInfo info = new ArmorInfo();
 
@@ -26,19 +26,19 @@ public class ArmorInfo {
     private static void setEquipmentSlots(ArmorInfo info, String[] s) {
         switch (s[1]) {
             case "HELMET":
-                info.equipmentSlot = CompEquipmentSlot.HEAD;
+                info.equipmentSlot = EquipmentSlot.HEAD;
                 info.equipmentSlotNumber = 0;
                 return;
             case "CHESTPLATE":
-                info.equipmentSlot = CompEquipmentSlot.CHEST;
+                info.equipmentSlot = EquipmentSlot.CHEST;
                 info.equipmentSlotNumber = 1;
                 return;
             case "LEGGINGS":
-                info.equipmentSlot = CompEquipmentSlot.LEGS;
+                info.equipmentSlot = EquipmentSlot.LEGS;
                 info.equipmentSlotNumber = 2;
                 return;
             case "BOOTS":
-                info.equipmentSlot = CompEquipmentSlot.FEET;
+                info.equipmentSlot = EquipmentSlot.FEET;
                 info.equipmentSlotNumber = 3;
                 return;
         }

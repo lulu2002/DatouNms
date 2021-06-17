@@ -4,13 +4,10 @@ import me.lulu.datounms.model.ArmorInfo;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
-import org.inventivetalent.packetlistener.handler.SentPacket;
 
 public abstract class CommonNMS {
 
     public abstract float getAbsorptionHeart(Player p);
-
-    public abstract String getMinecraftSoundKey(SentPacket packet);
 
     protected abstract String getBreakSoundString(Material material);
 

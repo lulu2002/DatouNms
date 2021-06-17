@@ -13,19 +13,19 @@ public class NewerSpigotAPI {
 
     public static void mergeChest(Block leftSide, Block rightSide) {
         BlockData leftData = leftSide.getBlockData();
-        ((Directional) leftData).setFacing(BlockFace.EAST);
+        (( Directional ) leftData).setFacing(BlockFace.EAST);
         leftSide.setBlockData(leftData);
 
-        Chest chestDataLeft = (Chest) leftData;
+        Chest chestDataLeft = ( Chest ) leftData;
         chestDataLeft.setType(Chest.Type.RIGHT);
         leftSide.setBlockData(chestDataLeft);
 
 
         BlockData rightData = rightSide.getBlockData();
-        ((Directional) rightData).setFacing(BlockFace.EAST);
+        (( Directional ) rightData).setFacing(BlockFace.EAST);
         rightSide.setBlockData(rightData);
 
-        Chest chestDataRight = (Chest) rightData;
+        Chest chestDataRight = ( Chest ) rightData;
         chestDataRight.setType(Chest.Type.LEFT);
         rightSide.setBlockData(chestDataRight);
     }

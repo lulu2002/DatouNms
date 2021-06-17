@@ -1,6 +1,7 @@
 package me.lulu.datounms.v1_8_R3;
 
 import me.lulu.datounms.CommonNMS;
+import me.lulu.datounms.DaTouNMS;
 import me.lulu.datounms.model.ArmorInfo;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Bukkit;
@@ -10,7 +11,6 @@ import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.inventivetalent.packetlistener.handler.SentPacket;
 import org.mineacademy.fo.Common;
 
 import java.util.ArrayList;
@@ -25,11 +25,6 @@ public class CraftCommonNMS extends CommonNMS {
     @Override
     public float getAbsorptionHeart(Player p) {
         return (( CraftPlayer ) p).getHandle().getAbsorptionHearts();
-    }
-
-    @Override
-    public String getMinecraftSoundKey(SentPacket packet) {
-        return packet.getPacketValue(0).toString();
     }
 
     @Override

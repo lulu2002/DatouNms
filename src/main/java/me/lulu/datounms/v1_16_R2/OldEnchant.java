@@ -5,7 +5,7 @@ import net.minecraft.server.v1_16_R2.ContainerEnchantTable;
 import net.minecraft.server.v1_16_R2.ContainerProperty;
 import org.bukkit.craftbukkit.v1_16_R2.inventory.CraftInventoryView;
 import org.bukkit.event.enchantment.PrepareItemEnchantEvent;
-import org.mineacademy.fo.ReflectionUtil;
+import me.lulu.datounms.utils.ReflectionUtil;
 
 import java.util.Random;
 import java.util.concurrent.Executors;
@@ -25,8 +25,8 @@ public class OldEnchant implements EnchantHandler {
 
     @Override
     public void randomizeSeed(PrepareItemEnchantEvent e) {
-        CraftInventoryView view = (CraftInventoryView) e.getView();
-        ContainerEnchantTable table = (ContainerEnchantTable) view.getHandle();
+        CraftInventoryView view = ( CraftInventoryView ) e.getView();
+        ContainerEnchantTable table = ( ContainerEnchantTable ) view.getHandle();
 
         ContainerProperty property = ReflectionUtil.getFieldContent(ContainerEnchantTable.class, "i", table);
         property.set(rand.nextInt()); // Set the enchantment seed
@@ -34,15 +34,15 @@ public class OldEnchant implements EnchantHandler {
 
     @Override
     public void oldEnchantCosts(PrepareItemEnchantEvent e) {
-        CraftInventoryView view = (CraftInventoryView) e.getView();
-        ContainerEnchantTable table = (ContainerEnchantTable) view.getHandle();
+        CraftInventoryView view = ( CraftInventoryView ) e.getView();
+        ContainerEnchantTable table = ( ContainerEnchantTable ) view.getHandle();
         generateNewCosts(table.costs, rand, Math.min(e.getEnchantmentBonus(), 15));
     }
 
     @Override
     public void hideEnchants(PrepareItemEnchantEvent e) {
-        CraftInventoryView view = (CraftInventoryView) e.getView();
-        ContainerEnchantTable table = (ContainerEnchantTable) view.getHandle();
+        CraftInventoryView view = ( CraftInventoryView ) e.getView();
+        ContainerEnchantTable table = ( ContainerEnchantTable ) view.getHandle();
         saveThread.schedule(() -> clearArray(table.enchantments), 10, TimeUnit.MILLISECONDS);
     }
 }

@@ -10,6 +10,7 @@ import me.lulu.datounms.v1_15_R1.NmsManager1_15_R1;
 import me.lulu.datounms.v1_16_R1.NmsManager1_16_R1;
 import me.lulu.datounms.v1_16_R2.NmsManager1_16_R2;
 import me.lulu.datounms.v1_16_R3.NmsManager1_16_R3;
+import me.lulu.datounms.v1_17_R1.NmsManager1_17_R1;
 import me.lulu.datounms.v1_8_R3.NmsManager1_8_R3;
 import me.lulu.datounms.v1_9_R1.NmsManager1_9_R1;
 import me.lulu.datounms.v1_9_R2.NmsManager1_9_R2;
@@ -44,8 +45,10 @@ public class NmsManagerFactory {
                 return new NmsManager1_16_R2();
             case "v1_16_R3":
                 return new NmsManager1_16_R3();
+            case "v1_17_R1":
+                return new NmsManager1_17_R1();
             default:
-                throw new UnSupportedNmsException("&cUnsupported Nms version, only supports 1.8 ~ 1.16");
+                throw new UnSupportedNmsException("&cUnsupported Nms version");
         }
     }
 

@@ -1,6 +1,7 @@
 package me.lulu.datounms.v1_15_R1;
 
 import me.lulu.datounms.CommonNMS;
+import me.lulu.datounms.DaTouNMS;
 import me.lulu.datounms.model.ArmorInfo;
 import net.minecraft.server.v1_15_R1.*;
 import org.bukkit.Bukkit;
@@ -10,8 +11,6 @@ import org.bukkit.craftbukkit.v1_15_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_15_R1.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.inventivetalent.packetlistener.handler.SentPacket;
-import org.mineacademy.fo.Common;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -20,12 +19,7 @@ import java.util.List;
 public class CraftCommonNMS extends CommonNMS {
     @Override
     public float getAbsorptionHeart(Player p) {
-        return ((CraftPlayer) p).getHandle().getAbsorptionHearts();
-    }
-
-    @Override
-    public String getMinecraftSoundKey(SentPacket packet) {
-        return IRegistry.SOUND_EVENT.getKey((SoundEffect) packet.getPacketValue(0)).toString();
+        return (( CraftPlayer ) p).getHandle().getAbsorptionHearts();
     }
 
     @Override
@@ -37,7 +31,7 @@ public class CraftCommonNMS extends CommonNMS {
         try {
             Field breakSound = SoundEffectType.class.getDeclaredField("z");
             breakSound.setAccessible(true);
-            SoundEffect soundEffect = (SoundEffect) breakSound.get(soundEffectType);
+            SoundEffect soundEffect = ( SoundEffect ) breakSound.get(soundEffectType);
             MinecraftKey keyInSoundRegistry = IRegistry.SOUND_EVENT.getKey(soundEffect);
             String soundName = keyInSoundRegistry.getKey();
             return soundName;
@@ -55,39 +49,40 @@ public class CraftCommonNMS extends CommonNMS {
 
     @Override
     public void playDeathAnimation(Player player) {
-        MinecraftServer nmsServer = ((CraftServer) Bukkit.getServer()).getServer();
-        WorldServer nmsWorld = ((CraftWorld) player.getWorld()).getHandle();
-        CraftPlayer cp = (CraftPlayer) player;
+        MinecraftServer nmsServer = (( CraftServer ) Bukkit.getServer()).getServer();
+        WorldServer nmsWorld = (( CraftWorld ) player.getWorld()).getHandle();
+        CraftPlayer cp = ( CraftPlayer ) player;
         EntityPlayer npc = new EntityPlayer(nmsServer, nmsWorld, cp.getProfile(), new PlayerInteractManager(nmsWorld));
         npc.setLocation(player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getZ(), player.getLocation().getYaw(), player.getLocation().getPitch());
         PacketPlayOutPlayerInfo removePlayer = new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, cp.getHandle());
         PacketPlayOutPlayerInfo addPlayer = new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, npc);
         PacketPlayOutNamedEntitySpawn entitySpawn = new PacketPlayOutNamedEntitySpawn(npc);
-        PacketPlayOutEntityStatus entityDeath = new PacketPlayOutEntityStatus(npc, (byte) 3);
+        PacketPlayOutEntityStatus entityDeath = new PacketPlayOutEntityStatus(npc, ( byte ) 3);
         List<Player> toPlayRemove = new ArrayList<>();
         for (Entity o : player.getNearbyEntities(16, 16, 16)) {
             if (o instanceof Player) {
-                PlayerConnection connection = ((CraftPlayer) o).getHandle().playerConnection;
+                PlayerConnection connection = (( CraftPlayer ) o).getHandle().playerConnection;
                 connection.sendPacket(removePlayer);
                 connection.sendPacket(addPlayer);
                 connection.sendPacket(entitySpawn);
                 connection.sendPacket(entityDeath);
-                toPlayRemove.add((Player) o);
+                toPlayRemove.add(( Player ) o);
             }
         }
-        Common.runLater(1, () -> {
+
+        Bukkit.getScheduler().runTaskLater(DaTouNMS.getPlugin(), () -> {
             for (Player o : toPlayRemove) {
                 if (o.isOnline()) {
-                    PlayerConnection connection = ((CraftPlayer) o).getHandle().playerConnection;
+                    PlayerConnection connection = (( CraftPlayer ) o).getHandle().playerConnection;
                     connection.sendPacket(removePlayer);
                 }
             }
-        });
+        }, 1L);
     }
 
     @Override
     public void setCanPickupExp(Player p, boolean b) {
-        CraftPlayer craftPlayer = (CraftPlayer) p;
+        CraftPlayer craftPlayer = ( CraftPlayer ) p;
         EntityPlayer entityPlayer = craftPlayer.getHandle();
 
         entityPlayer.bC = b ? 0 : Integer.MAX_VALUE;

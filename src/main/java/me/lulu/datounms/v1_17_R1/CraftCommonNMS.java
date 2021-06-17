@@ -1,14 +1,27 @@
-package me.lulu.datounms.v1_14_R1;
+package me.lulu.datounms.v1_17_R1;
 
 import me.lulu.datounms.CommonNMS;
 import me.lulu.datounms.DaTouNMS;
 import me.lulu.datounms.model.ArmorInfo;
-import net.minecraft.server.v1_14_R1.*;
+import net.minecraft.core.IRegistry;
+import net.minecraft.network.protocol.game.PacketPlayOutEntityStatus;
+import net.minecraft.network.protocol.game.PacketPlayOutNamedEntitySpawn;
+import net.minecraft.network.protocol.game.PacketPlayOutPlayerInfo;
+import net.minecraft.resources.MinecraftKey;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.EntityPlayer;
+import net.minecraft.server.level.WorldServer;
+import net.minecraft.server.network.PlayerConnection;
+import net.minecraft.sounds.SoundEffect;
+import net.minecraft.world.entity.EnumItemSlot;
+import net.minecraft.world.item.EnumArmorMaterial;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SoundEffectType;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_14_R1.CraftServer;
-import org.bukkit.craftbukkit.v1_14_R1.CraftWorld;
-import org.bukkit.craftbukkit.v1_14_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_17_R1.CraftServer;
+import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
@@ -25,14 +38,14 @@ public class CraftCommonNMS extends CommonNMS {
     @Override
     protected String getBreakSoundString(Material material) {
         MinecraftKey materialKey = new MinecraftKey(material.name().toLowerCase());
-        net.minecraft.server.v1_14_R1.Block nmsBlock = IRegistry.BLOCK.get(materialKey).getBlockData().getBlock();
+        Block nmsBlock = IRegistry.W.get(materialKey).getBlockData().getBlock();
         SoundEffectType soundEffectType = nmsBlock.getStepSound(null);
 
         try {
-            Field breakSound = SoundEffectType.class.getDeclaredField("y");
+            Field breakSound = SoundEffectType.class.getDeclaredField("aA");
             breakSound.setAccessible(true);
             SoundEffect soundEffect = ( SoundEffect ) breakSound.get(soundEffectType);
-            MinecraftKey keyInSoundRegistry = IRegistry.SOUND_EVENT.getKey(soundEffect);
+            MinecraftKey keyInSoundRegistry = IRegistry.T.getKey(soundEffect);
             String soundName = keyInSoundRegistry.getKey();
             return soundName;
         } catch (Exception e) {
@@ -52,16 +65,17 @@ public class CraftCommonNMS extends CommonNMS {
         MinecraftServer nmsServer = (( CraftServer ) Bukkit.getServer()).getServer();
         WorldServer nmsWorld = (( CraftWorld ) player.getWorld()).getHandle();
         CraftPlayer cp = ( CraftPlayer ) player;
-        EntityPlayer npc = new EntityPlayer(nmsServer, nmsWorld, cp.getProfile(), new PlayerInteractManager(nmsWorld));
+        EntityPlayer realPlayer = cp.getHandle();
+        EntityPlayer npc = new EntityPlayer(nmsServer, nmsWorld, cp.getProfile());
         npc.setLocation(player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getZ(), player.getLocation().getYaw(), player.getLocation().getPitch());
-        PacketPlayOutPlayerInfo removePlayer = new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, cp.getHandle());
-        PacketPlayOutPlayerInfo addPlayer = new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, npc);
+        PacketPlayOutPlayerInfo removePlayer = new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.a, cp.getHandle());
+        PacketPlayOutPlayerInfo addPlayer = new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.a, npc);
         PacketPlayOutNamedEntitySpawn entitySpawn = new PacketPlayOutNamedEntitySpawn(npc);
         PacketPlayOutEntityStatus entityDeath = new PacketPlayOutEntityStatus(npc, ( byte ) 3);
         List<Player> toPlayRemove = new ArrayList<>();
         for (Entity o : player.getNearbyEntities(16, 16, 16)) {
             if (o instanceof Player) {
-                PlayerConnection connection = (( CraftPlayer ) o).getHandle().playerConnection;
+                PlayerConnection connection = (( CraftPlayer ) o).getHandle().b;
                 connection.sendPacket(removePlayer);
                 connection.sendPacket(addPlayer);
                 connection.sendPacket(entitySpawn);
@@ -72,7 +86,7 @@ public class CraftCommonNMS extends CommonNMS {
         Bukkit.getScheduler().runTaskLater(DaTouNMS.getPlugin(), () -> {
             for (Player o : toPlayRemove) {
                 if (o.isOnline()) {
-                    PlayerConnection connection = (( CraftPlayer ) o).getHandle().playerConnection;
+                    PlayerConnection connection = (( CraftPlayer ) o).getHandle().b;
                     connection.sendPacket(removePlayer);
                 }
             }
@@ -84,6 +98,6 @@ public class CraftCommonNMS extends CommonNMS {
         CraftPlayer craftPlayer = ( CraftPlayer ) p;
         EntityPlayer entityPlayer = craftPlayer.getHandle();
 
-        entityPlayer.bF = b ? 0 : Integer.MAX_VALUE;
+        entityPlayer.cb = b ? 0 : Integer.MAX_VALUE;
     }
 }

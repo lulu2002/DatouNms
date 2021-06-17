@@ -1,7 +1,8 @@
 package me.lulu.datounms;
 
-import org.mineacademy.fo.Common;
-import org.mineacademy.fo.MinecraftVersion;
+import lombok.Getter;
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.java.JavaPlugin;
 
 public class DaTouNMS {
     private static WorldNMS worldNMS;
@@ -11,13 +12,25 @@ public class DaTouNMS {
 
     private static NmsManager nmsManager;
 
-    public static void setup() throws UnSupportedNmsException {
+    @Getter
+    private static JavaPlugin plugin;
+
+    public static void setup(JavaPlugin plugin) throws UnSupportedNmsException {
         NmsManagerFactory managerFactory = new NmsManagerFactory();
-        String version = MinecraftVersion.getServerVersion();
+        String version = getServerVersion();
 
         NmsManager nmsManager = managerFactory.getNmsManager(version);
         DaTouNMS.nmsManager = nmsManager;
-        Common.log("&aNms Version: &f" + version);
+        DaTouNMS.plugin = plugin;
+
+        System.out.println("Nms Version: " + version);
+    }
+
+    private static String getServerVersion() {
+        String a = Bukkit.getServer().getClass().getPackage().getName();
+        String version = a.substring(a.lastIndexOf('.') + 1);
+
+        return version;
     }
 
     public static WorldNMS getWorldNMS() {

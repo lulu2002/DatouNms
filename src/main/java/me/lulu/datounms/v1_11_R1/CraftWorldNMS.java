@@ -18,7 +18,7 @@ public class CraftWorldNMS implements WorldNMS {
 
     @Override
     public void setBlockSuperFast(Location loc, Material material, byte data, boolean applyPhysics) {
-        World w = ((CraftWorld) loc.getWorld()).getHandle();
+        World w = (( CraftWorld ) loc.getWorld()).getHandle();
         Chunk chunk = w.getChunkAt(loc.getBlockX() >> 4, loc.getBlockZ() >> 4);
         BlockPosition bp = new BlockPosition(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
         int combined = material.getId() + (data << 12);
@@ -34,7 +34,7 @@ public class CraftWorldNMS implements WorldNMS {
     @Override
     public void spawnOrb(Location location, int amount, int value) {
         double x = location.getX(), y = location.getY(), z = location.getZ();
-        World w = ((CraftWorld) location.getWorld()).getHandle();
+        World w = (( CraftWorld ) location.getWorld()).getHandle();
         for (int i = 0; i < amount; i++) {
             w.addEntity(new EntityExperienceOrb(w, x, y, z, value));
         }

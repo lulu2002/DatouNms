@@ -1,9 +1,13 @@
-package me.lulu.datounms.v1_16_R2;
+package me.lulu.datounms.v1_17_R1;
 
 import me.lulu.datounms.BiomeHandler;
 import me.lulu.datounms.model.BiomeData;
-import net.minecraft.server.v1_16_R2.*;
 import me.lulu.datounms.utils.ReflectionUtil;
+import net.minecraft.data.RegistryGeneration;
+import net.minecraft.data.worldgen.biome.BiomeRegistry;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.biome.BiomeBase;
+import net.minecraft.world.level.biome.Biomes;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -16,9 +20,9 @@ public class BiomeReplacer implements BiomeHandler {
     Map<String, BiomeBase> biomeBackup = new HashMap<>();
 
     public BiomeReplacer() {
-        List<BiomeBase> base = RegistryGeneration.WORLDGEN_BIOME.g().collect(Collectors.toList());
+        List<BiomeBase> base = RegistryGeneration.i.g().collect(Collectors.toList());
         for (BiomeBase b : base) {
-            biomeBackup.put(RegistryGeneration.WORLDGEN_BIOME.getKey(b).getKey().toLowerCase(), b);
+            biomeBackup.put(RegistryGeneration.i.getKey(b).getKey().toLowerCase(), b);
         }
     }
 

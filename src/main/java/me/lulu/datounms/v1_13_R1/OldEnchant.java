@@ -23,22 +23,22 @@ public class OldEnchant implements EnchantHandler {
 
     @Override
     public void randomizeSeed(PrepareItemEnchantEvent e) {
-        CraftInventoryView view = (CraftInventoryView) e.getView();
-        ContainerEnchantTable table = (ContainerEnchantTable) view.getHandle();
+        CraftInventoryView view = ( CraftInventoryView ) e.getView();
+        ContainerEnchantTable table = ( ContainerEnchantTable ) view.getHandle();
         table.f = rand.nextInt();// Set the enchantment seed
     }
 
     @Override
     public void oldEnchantCosts(PrepareItemEnchantEvent e) {
-        CraftInventoryView view = (CraftInventoryView) e.getView();
-        ContainerEnchantTable table = (ContainerEnchantTable) view.getHandle();
+        CraftInventoryView view = ( CraftInventoryView ) e.getView();
+        ContainerEnchantTable table = ( ContainerEnchantTable ) view.getHandle();
         generateNewCosts(table.costs, rand, Math.min(e.getEnchantmentBonus(), 15));
     }
 
     @Override
     public void hideEnchants(PrepareItemEnchantEvent e) {
-        CraftInventoryView view = (CraftInventoryView) e.getView();
-        ContainerEnchantTable table = (ContainerEnchantTable) view.getHandle();
+        CraftInventoryView view = ( CraftInventoryView ) e.getView();
+        ContainerEnchantTable table = ( ContainerEnchantTable ) view.getHandle();
         saveThread.schedule(new Runnable() {
             @Override
             public void run() {
