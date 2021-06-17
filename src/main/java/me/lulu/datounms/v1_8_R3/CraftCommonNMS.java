@@ -11,7 +11,6 @@ import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.mineacademy.fo.Common;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -64,14 +63,14 @@ public class CraftCommonNMS extends CommonNMS {
                 toPlayRemove.add(( Player ) o);
             }
         }
-        Common.runLater(1, () -> {
+        Bukkit.getScheduler().runTaskLater(DaTouNMS.getPlugin(), () -> {
             for (Player o : toPlayRemove) {
                 if (o.isOnline()) {
                     PlayerConnection connection = (( CraftPlayer ) o).getHandle().playerConnection;
                     connection.sendPacket(removePlayer);
                 }
             }
-        });
+        }, 1L);
     }
 
     @Override

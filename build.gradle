@@ -1,10 +1,17 @@
 plugins {
     id 'com.github.johnrengelman.shadow' version '5.2.0'
     id 'java'
+    id 'maven-publish'
 }
 
 group = 'me.lulu'
-version = 'SNAPSHOT'
+version = '1.0.0'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(16)
+    }
+}
 
 repositories {
     flatDir { dir("./libs") }
@@ -31,4 +38,15 @@ dependencies {
     compileOnly name: 'Spigot-1_16_R1'
     compileOnly name: 'Spigot-1_16_R2'
     compileOnly name: 'Spigot-1_16_R3'
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java;
+        }
+    }
+}
+tasks.withType(JavaCompile).configureEach {
+    options.forkOptions.jvmArgs.addAll(['--add-opens', 'jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED'])
 }
