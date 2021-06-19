@@ -12,12 +12,14 @@ repositories {
     mavenCentral()
 }
 
+// set java version to 16 to supports 1.17 apis
 java {
     toolchain {
         languageVersion.set(JavaLanguageVersion.of(16))
     }
 }
 
+// for bytecode version, we still use java8
 compileJava {
     options.release = 8
 }
