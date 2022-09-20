@@ -68,15 +68,17 @@ public class CraftCommonNMS extends CommonNMS {
         EntityPlayer realPlayer = cp.getHandle();
         EntityPlayer npc = new EntityPlayer(nmsServer, nmsWorld, cp.getProfile());
         npc.setLocation(player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getZ(), player.getLocation().getYaw(), player.getLocation().getPitch());
-        PacketPlayOutPlayerInfo removePlayer = new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.a, cp.getHandle());
+        PacketPlayOutPlayerInfo removeRealPlayer = new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.e, cp.getHandle());
         PacketPlayOutPlayerInfo addPlayer = new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.a, npc);
+        PacketPlayOutPlayerInfo removePlayer = new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.e, npc);
+        PacketPlayOutPlayerInfo addRealPlayer = new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.a, cp.getHandle());
         PacketPlayOutNamedEntitySpawn entitySpawn = new PacketPlayOutNamedEntitySpawn(npc);
         PacketPlayOutEntityStatus entityDeath = new PacketPlayOutEntityStatus(npc, ( byte ) 3);
         List<Player> toPlayRemove = new ArrayList<>();
         for (Entity o : player.getNearbyEntities(16, 16, 16)) {
             if (o instanceof Player) {
                 PlayerConnection connection = (( CraftPlayer ) o).getHandle().b;
-                connection.sendPacket(removePlayer);
+                connection.sendPacket(removeRealPlayer);
                 connection.sendPacket(addPlayer);
                 connection.sendPacket(entitySpawn);
                 connection.sendPacket(entityDeath);
@@ -86,8 +88,11 @@ public class CraftCommonNMS extends CommonNMS {
         Bukkit.getScheduler().runTaskLater(DaTouNMS.getPlugin(), () -> {
             for (Player o : toPlayRemove) {
                 if (o.isOnline()) {
-                    PlayerConnection connection = (( CraftPlayer ) o).getHandle().b;
+                    PlayerConnection connection = ((CraftPlayer) o).getHandle().b;
                     connection.sendPacket(removePlayer);
+                    if (cp.isOnline()) {
+                        connection.sendPacket(addRealPlayer);
+                    }
                 }
             }
         }, 1L);
